@@ -222,7 +222,7 @@ def build_feature_frame(vix: pd.DataFrame, slopes: pd.DataFrame, ex_post_file: P
     slopes10 = slopes[slopes["quote_time"] == "10:00:00"].copy()
     slopes10 = slopes10.groupby("quote_date", as_index=False)[["slope_up", "slope_dn"]].mean()
 
-    spx = pd.read_hdf(ex_post_file, key="future_moments_SPX")
+    spx = pd.read_parquet(ex_post_file)
     spx["date"] = pd.to_datetime(spx["date"])
     spx["time"] = spx["time"].astype(str)
     spx10 = spx[spx["time"] == "10:00:00"][["date", "SPX_lret", "SPX_lrv", "SPX_lrv_skew"]].copy()
@@ -380,7 +380,7 @@ def main() -> int:
     opt_file = data_dir / "data_opt.parquet"
     vix_file = data_dir / "vix.parquet"
     slopes_file = data_dir / "slopes.parquet"
-    ex_post_file = data_dir / "ex_post_moments.h5"
+    ex_post_file = data_dir / "future_moments_SPX.parquet"
     output_file = args.output or (tables_dir / "0dte_conditional_oos.tex")
     rep_moneyness_out = args.rep_moneyness_out or (data_dir / "conditional_representative_moneyness.csv")
     rep_moneyness_tex_out = (

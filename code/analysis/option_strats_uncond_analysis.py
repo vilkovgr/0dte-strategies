@@ -1,7 +1,7 @@
 """Unconditional analysis of 0DTE option strategy returns.
 
 Loads data_structures.parquet, data_opt.parquet, vix.parquet,
-ex_post_moments.h5, and ALL_eod.csv.  Produces LaTeX tables
+future_moments_SPX.parquet, and ALL_eod.csv.  Produces LaTeX tables
 (``0dte_stratret*.tex``) and PDF figures (time-series plots, bar charts,
 VRP plots).
 
@@ -242,7 +242,7 @@ def main(project_root: Path | None = None):
     strats_all = pd.read_parquet(data_dir / 'data_structures.parquet')
     df_vix = pd.read_parquet(data_dir / 'vix.parquet')
     df_vix['quote_time'] = pd.to_datetime(df_vix['quote_time'], format='%H:%M:%S').dt.time
-    df_rv = pd.read_hdf(data_dir / 'ex_post_moments.h5', key='future_moments_SPX')
+    df_rv = pd.read_parquet(data_dir / 'future_moments_SPX.parquet')
     df_opt = df_opt.sort_values(by=['quote_date', 'quote_time', 'option_type', 'mnes_rel'])
 
     df_eod = pd.read_csv(data_dir / 'ALL_eod.csv')

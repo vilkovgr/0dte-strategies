@@ -1185,7 +1185,7 @@ def prepare_dataset(
     opt = pd.read_parquet(data_dir / "data_opt.parquet")
     vix = pd.read_parquet(data_dir / "vix.parquet")
     slopes = pd.read_parquet(data_dir / "slopes.parquet")
-    ex_post_file = data_dir / "ex_post_moments.h5"
+    ex_post_file = data_dir / "future_moments_SPX.parquet"
 
     strats = strats.copy()
     strats["quote_date"] = pd.to_datetime(strats["quote_date"])

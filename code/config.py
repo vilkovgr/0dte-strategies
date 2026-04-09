@@ -66,8 +66,17 @@ class RepoConfig:
         return self.data_dir / "slopes.parquet"
 
     @property
+    def moments_spx_path(self) -> Path:
+        return self.data_dir / "future_moments_SPX.parquet"
+
+    @property
+    def moments_vix_path(self) -> Path:
+        return self.data_dir / "future_moments_VIX.parquet"
+
+    @property
     def moments_path(self) -> Path:
-        return self.data_dir / "ex_post_moments.h5"
+        """Legacy alias — prefer moments_spx_path / moments_vix_path."""
+        return self.data_dir / "future_moments_SPX.parquet"
 
     @property
     def eod_path(self) -> Path:

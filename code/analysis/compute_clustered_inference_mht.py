@@ -73,7 +73,7 @@ def build_features(vix: pd.DataFrame, ex_post_file: Path) -> pd.DataFrame:
     vix10["iv"] = vix10["vix"] * 1e5
     vix10["isk"] = (vix10["vixup"] - vix10["vixdn"]) * 1e5
 
-    spx = pd.read_hdf(ex_post_file, key="future_moments_SPX")
+    spx = pd.read_parquet(ex_post_file)
     spx["date"] = pd.to_datetime(spx["date"])
     spx["time"] = spx["time"].astype(str)
     spx10 = spx[spx["time"] == "10:00:00"][["date", "SPX_lrv", "SPX_lrvup", "SPX_lrvdn"]].copy()
@@ -116,7 +116,7 @@ def main() -> int:
 
     strats_file = data_dir / "data_structures.parquet"
     vix_file = data_dir / "vix.parquet"
-    ex_post_file = data_dir / "ex_post_moments.h5"
+    ex_post_file = data_dir / "future_moments_SPX.parquet"
     output_file = args.output or (tables_dir / "0dte_inference_cluster_mht.tex")
 
     strats = pd.read_parquet(strats_file)
