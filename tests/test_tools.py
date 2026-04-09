@@ -97,21 +97,21 @@ def test_reading_guide_sections():
     text = path.read_text(encoding="utf-8")
 
     required = [
+        "Notation Glossary",
+        "Equation Quick-Reference",
+        "Dataset Divergence Log",
+        "Suggested Reading Paths",
         "Three Core Claims",
-        "Structure",
-        "Key Methodological Choices",
     ]
     for section in required:
         assert section in text, f"reading-guide.md missing section: {section}"
 
 
-def test_variables_sections():
+def test_variables_gex_section():
     path = REPO_ROOT / "docs" / "agent-context" / "variables.md"
     text = path.read_text(encoding="utf-8")
-    assert "Implied Measures" in text, "variables.md missing Implied Measures"
-    assert "Strategy-Level Conditional Features" in text, (
-        "variables.md missing Strategy-Level Conditional Features"
-    )
+    assert "GEX-Style Features" in text, "variables.md missing GEX-Style Features"
+    assert "Conditional Targets" in text, "variables.md missing Conditional Targets"
 
 
 def test_requirements_upper_bounds():

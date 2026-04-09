@@ -1,13 +1,15 @@
 # Variable Definitions
 
+> For formal LaTeX notation with equation numbers, see the **Notation Glossary** in `reading-guide.md`.
+
 ## Implied Measures (from 0DTE SPXW options at bar time t)
 
-| Variable | Formula | Description |
-|----------|---------|-------------|
-| IV_t | VIX methodology on 0DTE SPXW | Integrated implied variance from t to 16:00 ET |
-| IV^up_t | OTM calls only | Upside implied semivariance |
-| IV^dn_t | OTM puts only | Downside implied semivariance |
-| IS_t | IV^up_t - IV^dn_t | Implied skewness proxy |
+| Variable | Formula | Eq. | Description |
+|----------|---------|-----|-------------|
+| IV_t | VIX methodology on 0DTE SPXW | (1) | Integrated implied variance from t to 16:00 ET |
+| IV^up_t | OTM calls only | (1) | Upside implied semivariance |
+| IV^dn_t | OTM puts only | (1) | Downside implied semivariance |
+| IS_t | IV^up_t - IV^dn_t | (2) | Implied skewness proxy |
 
 ## Realized Measures (from SPX 1-minute bars)
 
@@ -62,6 +64,28 @@
 - **SPX_lrv_skew (lagged)**: Yesterday's realized skewness
 - **SPX_lret (lagged)**: Yesterday's log return
 
+## GEX-Style Features (per leg l, aggregated to strategy)
+
+| Variable | Formula | Eq. | Description |
+|----------|---------|-----|-------------|
+| g^{OI,n} | q_l × OI_l × Γ_l × 100 × S²_l | (17) | Signed OI-weighted gamma exposure proxy |
+| g^{OI,a} | \|q_l\| × OI_l × \|Γ_l\| × 100 × S²_l | (18) | Absolute OI-weighted gamma exposure |
+| g^{Γ,n} | q_l × Γ_l | (19) | Signed structural gamma from leg mix |
+| g^{Γ,a} | \|q_l\| × \|Γ_l\| | (20) | Absolute structural gamma magnitude |
+| B^Γ | g^{OI,n} / (\|g^{OI,a}\| + 1) | (21) | Normalized GEX balance |
+| R^Γ | f^Γ / (\|g^{OI,a}\| + 1) | (21) | Flow-pressure scaled by OI gamma base |
+| T | h / (d + 1) | (21) | Liquidity tightness: cost per depth unit |
+
 ## Volatility Surface Slopes (PIT)
 - **slope_up**: Upside IV slope (OTM calls vs ATM), point-in-time
 - **slope_dn**: Downside IV slope (OTM puts vs ATM), point-in-time
+
+## Conditional Targets and Positions
+
+| Variable | Formula | Description |
+|----------|---------|-------------|
+| y^net_{s,t} | PNL^net_{s,t} = reth_und - c_{s,t} | Net strategy return after costs |
+| c_{s,t} | half-spread + 0.5bp | Implementation cost |
+| p_{s,t} | Λ(α_s + β'_s X_{s,t}) | Predicted P(y^net > 0) from logistic |
+| w (hard) | sign(p̂ - 0.5) ∈ {-1, +1} | Binary directional position |
+| w (soft) | 2p̂ - 1 ∈ [-1, +1] | Confidence-weighted position |

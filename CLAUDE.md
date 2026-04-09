@@ -63,13 +63,16 @@ All in `data/` directory (Git LFS tracked):
 
 ## AI Context Documents
 
-- `docs/paper/paper-annotated.md` — Full paper with `@section-type` HTML annotations for machine navigation
-- `docs/paper/paper-digest.md` — Condensed paper digest
-- `docs/agent-context/reading-guide.md` — Structure, core claims, methodological choices
-- `docs/agent-context/variables.md` — Variable definitions and feature families
-- `docs/agent-context/method.md` — Methodology overview
-- `docs/agent-context/results-summary.md` — Key results summary
-- `docs/manifests/exhibits.csv` — Table/figure → script mapping
+The `docs/agent-context/` folder contains structured context optimized for LLM consumption:
+- **`reading-guide.md`** — Paper structure, notation glossary (35 symbols), equation quick-reference (22 equations), dataset divergence log, six curated reading paths
+- **`variables.md`** — Variable definitions with equation numbers and GEX features
+- **`method.md`** — Methodology: interpolation pipeline, conditional protocol, model zoo
+- **`results-summary.md`** — Headline numbers for every exhibit
+- **`strategies.md`** — Seven strategy templates with leg definitions
+- **`docs/paper/paper-annotated.md`** — Full paper text with `@section-type` annotations for machine navigation
+
+When discussing math, start from the **Notation Glossary** in `reading-guide.md`.
+For deep-dive exploration, use `paper-annotated.md` which provides the full text with structured section annotations.
 
 ## Important Context for Edits
 
@@ -78,11 +81,18 @@ All in `data/` directory (Git LFS tracked):
 - LaTeX tables use `booktabs` style (`\toprule`, `\midrule`, `\bottomrule`)
 - Figures use `matplotlib` with PDF backend
 - After any code change, run `python tests/test_replication.py` to verify
+- Run `python tests/test_tools.py` for tooling/docs checks
+- Run `python tools/doctor.py` to verify environment (supports `--quick`, `--verbose`)
+
+`tools/latex2md.py` is available in the public repo, but the full manuscript `.tex` is not shipped there.
+For public verification, use `tests/fixtures/sample_paper.tex`.
 
 ## Style Conventions
 
 - Python 3.10+, type hints encouraged
 - `from __future__ import annotations` at top of all modules
 - `pandas` for data manipulation, `statsmodels` for regression/inference
+- `matplotlib` + `seaborn` for visualization; PDF backend for publication figures
 - `argparse` for CLI in each script
 - No notebook dependencies — all scripts are standalone `.py` files
+- Model-zoo dependencies (`torch`, `lightgbm`, `xgboost`, `catboost`) are optional — install via `requirements-modelzoo.txt` only for Tables 8–9
