@@ -19,11 +19,16 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import torch
-from torch import nn
-from torch.nn import functional as F
-from torch.utils.data import DataLoader, TensorDataset
 from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin, clone
+
+try:
+    import torch
+    from torch import nn
+    from torch.nn import functional as F
+    from torch.utils.data import DataLoader, TensorDataset
+    HAS_TORCH = True
+except ImportError:
+    HAS_TORCH = False
 from sklearn.ensemble import (
     ExtraTreesClassifier,
     HistGradientBoostingClassifier,
@@ -93,14 +98,27 @@ class ScalingSpec:
 FEATURE_SETS = ("baseline", "gex", "flow", "liquidity", "all")
 
 
+if not HAS_TORCH:
+    class _TorchStub:
+        """Placeholder so class bodies referencing nn.Module can parse."""
+        Module = type("Module", (), {})
+    nn = _TorchStub()  # type: ignore[assignment]
+    F = None  # type: ignore[assignment]
+    DataLoader = None  # type: ignore[assignment]
+    TensorDataset = None  # type: ignore[assignment]
+
+
 def _set_torch_seed(seed: int) -> None:
+    if not HAS_TORCH:
+        np.random.seed(seed)
+        return
     torch.manual_seed(seed)
     np.random.seed(seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
 
 
-def _activation_layer(name: str) -> nn.Module:
+def _activation_layer(name: str) -> "nn.Module":
     key = name.lower()
     if key == "relu":
         return nn.ReLU()
@@ -2249,6 +2267,16 @@ def main() -> int:
     if not HAS_CATBOOST and any(m in {"catboost", "catboost_deep", "catboost_clf", "catboost_clf_deep"} for m in args.models):
         warnings.warn(
             "catboost is not installed; skipping catboost models. Install via: pip install catboost",
+            RuntimeWarning,
+        )
+    TORCH_MODEL_IDS = {
+        "nn", "nn_deep", "nn_clf", "nn_clf_deep", "cnn", "cnn_deep",
+        "cnn_clf", "cnn_clf_deep", "linear_ridge_nn",
+    }
+    if not HAS_TORCH and any(m in TORCH_MODEL_IDS for m in args.models):
+        warnings.warn(
+            "torch is not installed; skipping neural-net models. "
+            "Install via: pip install -r requirements-modelzoo.txt",
             RuntimeWarning,
         )
 

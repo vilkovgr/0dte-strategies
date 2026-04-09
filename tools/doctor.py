@@ -20,15 +20,55 @@ REQUIRED_PACKAGES = [
     ("h5py", "h5py"),
 ]
 
-REQUIRED_DATA_FILES = {
-    "data_opt.parquet": 200_000_000,
-    "data_structures.parquet": 10_000_000,
-    "vix.parquet": 500_000,
-    "slopes.parquet": 100_000,
-    "future_moments_SPX.parquet": 50_000_000,
-    "future_moments_VIX.parquet": 10_000_000,
-    "ALL_eod.csv": 1_000_000,
-}
+REQUIRED_DATA_FILES = [
+    "data_opt.parquet",
+    "data_structures.parquet",
+    "vix.parquet",
+    "slopes.parquet",
+    "future_moments_SPX.parquet",
+    "future_moments_VIX.parquet",
+    "ALL_eod.csv",
+]
+
+LFS_POINTER_SIGNATURE = b"version https://git-lfs.github.com/spec/"
+LFS_POINTER_MAX_BYTES = 200
+
+
+def _is_lfs_pointer(path: Path) -> bool:
+    """Detect an unresolved Git-LFS pointer (small text stub instead of real data)."""
+    try:
+        with open(path, "rb") as f:
+            head = f.read(LFS_POINTER_MAX_BYTES)
+        return head.startswith(LFS_POINTER_SIGNATURE)
+    except OSError:
+        return False
+
+
+def _validate_parquet(path: Path) -> tuple[bool, str]:
+    """Open parquet metadata to confirm the file is usable."""
+    try:
+        import pyarrow.parquet as pq
+        pf = pq.ParquetFile(path)
+        meta = pf.metadata
+        return True, f"{meta.num_rows:,} rows × {meta.num_columns} cols"
+    except Exception as exc:
+        return False, str(exc)
+
+
+def _validate_csv(path: Path) -> tuple[bool, str]:
+    """Quick-check a CSV has a header and at least one data row."""
+    try:
+        with open(path) as f:
+            header = f.readline()
+            first = f.readline()
+        if not header.strip():
+            return False, "empty file"
+        if not first.strip():
+            return False, "header only, no data rows"
+        ncols = len(header.split(","))
+        return True, f"{ncols} columns"
+    except Exception as exc:
+        return False, str(exc)
 
 
 def check_python() -> bool:
@@ -57,17 +97,32 @@ def check_data() -> tuple[int, int]:
     data_dir = REPO_ROOT / "data"
     passed = 0
     total = len(REQUIRED_DATA_FILES)
-    for fname, min_bytes in REQUIRED_DATA_FILES.items():
+
+    for fname in REQUIRED_DATA_FILES:
         fpath = data_dir / fname
+
         if not fpath.exists():
             print(f"  {fname:<35s} MISSING  (run: git lfs pull)")
-        elif fpath.stat().st_size < min_bytes:
-            size_mb = fpath.stat().st_size / 1_000_000
-            print(f"  {fname:<35s} TOO SMALL ({size_mb:.1f} MB) — LFS pointer not resolved?")
+            continue
+
+        if _is_lfs_pointer(fpath):
+            print(f"  {fname:<35s} LFS POINTER — not resolved  (run: git lfs pull)")
+            continue
+
+        if fname.endswith(".parquet"):
+            ok, detail = _validate_parquet(fpath)
+        elif fname.endswith(".csv"):
+            ok, detail = _validate_csv(fpath)
         else:
-            size_mb = fpath.stat().st_size / 1_000_000
-            print(f"  {fname:<35s} {size_mb:>7.1f} MB  OK")
+            ok, detail = fpath.stat().st_size > 0, "non-empty"
+
+        size_mb = fpath.stat().st_size / 1_000_000
+        if ok:
+            print(f"  {fname:<35s} {size_mb:>7.1f} MB  OK  ({detail})")
             passed += 1
+        else:
+            print(f"  {fname:<35s} {size_mb:>7.1f} MB  CORRUPT  ({detail})")
+
     return passed, total
 
 

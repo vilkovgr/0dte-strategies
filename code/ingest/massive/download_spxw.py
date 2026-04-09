@@ -139,6 +139,36 @@ def download_option_snapshots(client: MassiveClient, output_dir: Path,
                         len(all_quotes), len(spxw), date_str)
 
 
+def download_eod_prices(client: MassiveClient, output_dir: Path,
+                        start: dt.date, end: dt.date) -> None:
+    """Download daily EOD bars for SPX and VIX."""
+    eod_dir = output_dir / "eod"
+    eod_dir.mkdir(parents=True, exist_ok=True)
+
+    for ticker, name in [(SPX_INDEX_TICKER, "SPX"), (VIX_INDEX_TICKER, "VIX")]:
+        out_path = eod_dir / f"eod_{name}.parquet"
+        if out_path.exists():
+            logger.info("Skipping EOD %s — already exists", out_path)
+            continue
+
+        logger.info("Downloading daily bars for %s", name)
+        rows = client.get_daily_bars(
+            ticker=ticker,
+            from_date=start.isoformat(),
+            to_date=end.isoformat(),
+        )
+        if rows:
+            df = pd.DataFrame(rows)
+            df = df.rename(columns={
+                "t": "timestamp_ms", "o": "Open", "h": "High", "l": "Low",
+                "c": "Close", "v": "volume",
+            })
+            df["Date"] = pd.to_datetime(df["timestamp_ms"], unit="ms", utc=True).dt.date
+            df["root"] = name
+            df.to_parquet(out_path, index=False)
+            logger.info("Saved %d daily bars for %s", len(df), name)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Download SPXW 0DTE data from Massive.")
     parser.add_argument("--start", required=True, help="Start date YYYY-MM-DD")
@@ -150,6 +180,8 @@ def parse_args() -> argparse.Namespace:
                         help="Skip underlying bar download")
     parser.add_argument("--skip-options", action="store_true",
                         help="Skip option quote download")
+    parser.add_argument("--skip-eod", action="store_true",
+                        help="Skip daily EOD download")
     parser.add_argument("--verbose", action="store_true")
     return parser.parse_args()
 
@@ -173,6 +205,9 @@ def main() -> None:
     if not args.skip_options:
         dates = _trading_days(start, end)
         download_option_snapshots(client, args.output_dir, dates)
+
+    if not args.skip_eod:
+        download_eod_prices(client, args.output_dir, start, end)
 
     logger.info("Done. Raw data in %s", args.output_dir)
 

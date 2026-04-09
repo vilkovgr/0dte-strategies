@@ -118,6 +118,27 @@ class MassiveClient:
             params["timestamp.lte"] = ts_lte
         return self._paginate(f"/v3/quotes/{encoded}", params=params)
 
+    # ── Option snapshots (Greeks via snapshot endpoint) ──
+
+    def get_option_snapshot(self, *, underlying: str = "I:SPX",
+                            limit: int = 250) -> List[Dict[str, Any]]:
+        """Fetch latest option chain snapshot (includes Greeks and IV).
+
+        Uses the /v3/snapshot/options/{underlyingAsset} endpoint which returns
+        Greeks, IV, and quote data in a single call for all live contracts.
+        """
+        encoded = quote(underlying, safe="")
+        return self._paginate(
+            f"/v3/snapshot/options/{encoded}",
+            params={"limit": limit},
+        )
+
+    def get_option_contract_details(self, *, ticker: str) -> Dict[str, Any]:
+        """Fetch detailed contract info including Greeks for a single option."""
+        encoded = quote(ticker, safe="")
+        payload = self._get(f"/v3/reference/tickers/{encoded}")
+        return payload.get("results", {}) or {}
+
     # ── Underlying bars ──
 
     def list_aggregates(self, *, ticker: str, from_date: str, to_date: str,
@@ -130,3 +151,11 @@ class MassiveClient:
             params={"adjusted": "true", "sort": "asc", "limit": limit},
         )
         return payload.get("results", []) or []
+
+    def get_daily_bars(self, *, ticker: str, from_date: str, to_date: str,
+                       limit: int = 50_000) -> List[Dict[str, Any]]:
+        """Fetch daily (EOD) bars for SPX, VIX, etc."""
+        return self.list_aggregates(
+            ticker=ticker, from_date=from_date, to_date=to_date,
+            multiplier=1, timespan="day", limit=limit,
+        )

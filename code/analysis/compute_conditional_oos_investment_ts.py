@@ -14,8 +14,12 @@ Outputs:
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 
+import matplotlib
+if os.environ.get("MPLBACKEND") is None and matplotlib.get_backend().lower() == "macosx":
+    matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd

@@ -15,6 +15,9 @@ import datetime
 import os
 from pathlib import Path
 
+import matplotlib
+if os.environ.get("MPLBACKEND") is None and matplotlib.get_backend().lower() == "macosx":
+    matplotlib.use("Agg")
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import numpy as np
@@ -316,7 +319,7 @@ def main(project_root: Path | None = None):
 
                 start_date = res_ts_strats[opt_type].index.min()
                 end_date = res_ts_strats[opt_type].index.max()
-                quarter_ends = pd.date_range(start=start_date, end=end_date, freq='Y')
+                quarter_ends = pd.date_range(start=start_date, end=end_date, freq='YE')
 
                 for quarter_end in quarter_ends:
                     ax.axvline(x=quarter_end, color='red', linestyle=':', linewidth=0.1)

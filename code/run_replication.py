@@ -11,10 +11,13 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 import sys
 import time
 from pathlib import Path
+
+os.environ.setdefault("MPLBACKEND", "Agg")
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS_DIR = REPO_ROOT / "code" / "analysis"
@@ -36,13 +39,13 @@ SLOW_SCRIPTS = {"compute_conditional_model_zoo.py"}
 # Run separately after compute_conditional_model_zoo.py produces its outputs.
 PIPELINE_SCRIPTS = [
     ("Conditional model zoo (Tables 8–9)", "compute_conditional_model_zoo.py"),
-    ("Conditional OOS investment TS", "compute_conditional_oos_investment_ts.py"),
     ("Target choice comparison", "build_conditional_target_choice_table.py"),
     ("Binary decision summary", "derive_binary_decision_summary.py"),
 ]
 
 FIGURE_SCRIPTS = [
     ("Strategy payoffs, bar charts, time series", "figs_strats.py"),
+    ("Conditional OOS investment TS (prereq for top-K figure)", "compute_conditional_oos_investment_ts.py"),
     ("Top-K basket leg composition", "plot_conditional_topk_basket_legs.py"),
 ]
 

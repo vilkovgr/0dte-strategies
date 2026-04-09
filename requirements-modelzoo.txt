@@ -1,0 +1,7 @@
+# Extra dependencies for the conditional model zoo (Tables 8–9).
+# Install on top of the base requirements:
+#   pip install -r requirements.txt -r requirements-modelzoo.txt
+torch>=2.0
+lightgbm>=4.0
+xgboost>=2.0
+catboost>=1.2
