@@ -60,7 +60,7 @@ data/                    Shipped derived panels (Git LFS)
   data_opt.parquet       Interpolated option panel (moneyness 0.98–1.02)
   data_structures.parquet Strategy panel (7 types × moneyness × dates)
   vix.parquet            VIX + intraday moments
-  slopes.parquet         VIX term-structure slopes
+  slopes.parquet         Volatility surface slopes (PIT)
   future_moments_SPX.parquet  Forward realized moments (SPX)
   future_moments_VIX.parquet  Forward realized moments (VIX)
   ALL_eod.csv            End-of-day reference prices

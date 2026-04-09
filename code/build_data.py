@@ -14,7 +14,7 @@ The pipeline:
     2. Compute moneyness, payoff, PNL for each option
     3. Interpolate over moneyness grid (0.98–1.02, step 0.001) using Akima
     4. Build strategy-level features (7 templates)
-    5. Compute VIX-style implied variance and term-structure slopes
+    5. Compute VIX-style implied variance and volatility surface slopes (PIT)
     6. Compute realized moments (RV, RS) from 1-minute bars
     7. Build ALL_eod.csv from daily bars
     8. Write output to data/*.parquet
@@ -302,7 +302,7 @@ def build_strategy_panel(opt_panel: pd.DataFrame) -> pd.DataFrame:
 
 
 # ===================================================================
-# Step 5: VIX-style implied variance and term-structure slopes
+# Step 5: VIX-style implied variance and volatility surface slopes (PIT)
 # ===================================================================
 
 def compute_vix_implied_variance(opt_panel: pd.DataFrame) -> pd.DataFrame:
@@ -382,13 +382,13 @@ def compute_vix_implied_variance(opt_panel: pd.DataFrame) -> pd.DataFrame:
 
 
 def compute_slopes(opt_panel: pd.DataFrame) -> pd.DataFrame:
-    """Compute IV term-structure slopes from the interpolated panel.
+    """Compute volatility surface slopes (point-in-time) from the interpolated panel.
 
     slope_up = mean((IV_call - IV_atm) / (mnes - 1.0)) for OTM calls
     slope_dn = mean((IV_put - IV_atm) / (1.0 - mnes)) for OTM puts
     Both scaled by 1e5 to match private-repo convention.
     """
-    logger.info("Computing term-structure slopes...")
+    logger.info("Computing volatility surface slopes (PIT)...")
 
     if "implied_volatility" not in opt_panel.columns:
         logger.warning("Cannot compute slopes: missing implied_volatility")
@@ -587,7 +587,7 @@ def main() -> None:
         vix_df.to_parquet(out / "vix.parquet", index=False)
         logger.info("Wrote vix.parquet (%d rows)", len(vix_df))
 
-    # Term-structure slopes → slopes.parquet
+    # Volatility surface slopes (PIT) → slopes.parquet
     slopes_df = compute_slopes(opt_panel)
     if not slopes_df.empty:
         slopes_df.to_parquet(out / "slopes.parquet", index=False)

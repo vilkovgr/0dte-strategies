@@ -62,6 +62,6 @@
 - **SPX_lrv_skew (lagged)**: Yesterday's realized skewness
 - **SPX_lret (lagged)**: Yesterday's log return
 
-## Term Structure
-- **slope_up**: VIX term-structure upside slope
-- **slope_dn**: VIX term-structure downside slope
+## Volatility Surface Slopes (PIT)
+- **slope_up**: Upside IV slope (OTM calls vs ATM), point-in-time
+- **slope_dn**: Downside IV slope (OTM puts vs ATM), point-in-time

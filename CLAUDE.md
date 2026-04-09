@@ -44,7 +44,7 @@ All in `data/` directory (Git LFS tracked):
 - `data_opt.parquet` — interpolated option panel (mid, spread, Greeks, payoff, PNL)
 - `data_structures.parquet` — strategy-level panel (7 types, flow/liquidity features)
 - `vix.parquet` — VIX and intraday implied/realized moments
-- `slopes.parquet` — VIX term-structure slopes
+- `slopes.parquet` — Volatility surface slopes (point-in-time)
 - `future_moments_SPX.parquet` — forward realized moments for SPX
 - `future_moments_VIX.parquet` — forward realized moments for VIX
 - `ALL_eod.csv` — end-of-day reference prices
