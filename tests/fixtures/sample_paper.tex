@@ -1,0 +1,121 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{bbm}
+
+\newcommand{\titleText}{Sample Paper: Testing the Converter}
+\newcommand{\tables}{tables/}
+\newcommand{\figures}{figures/}
+
+\begin{document}
+
+\title{\Large \bf \titleText}
+\author{{\large Test Author}\thanks{Test affiliation.}}
+\date{{\large January 1, 2026}}
+\maketitle
+
+\begin{abstract}
+\noindent
+This is a sample paper used to test the LaTeX-to-annotated-markdown converter.
+It contains sections, math, figures, tables, and citations.
+\end{abstract}
+
+\noindent \textbf{Keywords:} testing, converter, sample
+
+\section{Introduction}
+\label{sect:intro}
+
+This paper tests whether the converter handles basic LaTeX constructs.
+We cite \citealp{AuthorA2025} and also \citet{AuthorB2026}.
+
+\section{Data and Methods}
+\label{sect:data}
+
+\paragraph{Data Sources.}
+We use sample data from 2020 to 2025. The key variable is $X_t$.
+
+\paragraph{Implied Measures.}
+Implied variance is:
+\begin{align}
+    IV_t = \sum_i \frac{\Delta K_i}{K_i^2} Q(K_i).
+\end{align}\label{eq:iv}
+Realized variance is:
+\begin{align}\label{eq:rv}
+    RV_t = \sum_{t}^{T-1} r_{t,t+1}^2.
+\end{align}
+
+\section{Unconditional Results}
+\label{sect:uncond}
+
+Strategy PNL is highly variable. We report results in Table~\ref{tab:main}.
+
+\begin{table}[!htbp]
+\centering
+\small
+\input{\tables sample_table.tex}
+\caption{\textbf{Main Results.} Summary statistics for strategy PNL.}
+\label{tab:main}
+\end{table}
+
+Figure~\ref{fig:bars} shows bar charts.
+
+\begin{figure}[!htbp]
+\centering
+\subfigure[Panel One]{
+\includegraphics[width=0.45\textwidth]{\figures panel_one.pdf}}
+\subfigure[Panel Two]{
+\includegraphics[width=0.45\textwidth]{\figures panel_two.pdf}}
+\caption{\textbf{Bar Charts.} The figure shows two panels of results.}
+\label{fig:bars}
+\end{figure}
+
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{\figures wide_figure.pdf}
+\caption{\textbf{Wide Figure.} A full-width figure spanning two columns.}
+\label{fig:wide}
+\end{figure*}
+
+\subsection{Robustness}
+\label{sect:robust}
+
+Results survive multiple-testing correction.\footnote{We use Benjamini-Hochberg FDR control.}
+
+\section{Conditional Signals}
+\label{sect:cond}
+
+The conditional model predicts:
+\begin{align}
+    p_{s,t} = \Pr(y^{net}_{s,t} > 0 \mid X_{s,t}) = \Lambda(\alpha_s + \beta_s^\top X_{s,t}).
+\end{align}
+Hard mapping: $w_t = \mathrm{sign}(p_t - 0.5)$.
+
+\begin{table*}[!htbp]
+\centering
+\input{\tables wide_table.tex}
+\caption{\textbf{Model Comparison.} Comparing different models.}
+\label{tab:wide}
+\end{table*}
+
+\section{Conclusion}
+\label{sect:conclusion}
+
+The converter handles sections, math, figures, tables, and citations.
+
+\appendix
+
+\section{Additional Tables}
+\label{sect:app}
+
+\begin{table}[!htbp]
+\centering
+\input{\tables appendix_table.tex}
+\caption{\textbf{Appendix Table.} Extra results.}
+\label{tab:app}
+\end{table}
+
+\end{document}

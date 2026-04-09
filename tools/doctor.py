@@ -1,15 +1,29 @@
 #!/usr/bin/env python3
-"""Environment and data health check for the 0DTE replication package."""
+"""Environment and data health check for the 0DTE replication package.
+
+Usage:
+    python tools/doctor.py            # full check
+    python tools/doctor.py --quick    # Python + dependencies only
+    python tools/doctor.py --verbose  # show passing checks in detail
+"""
 
 from __future__ import annotations
 
+import argparse
 import importlib
+import os
 import sys
+import tempfile
 from pathlib import Path
+
+if "MPLCONFIGDIR" not in os.environ:
+    os.environ["MPLCONFIGDIR"] = tempfile.mkdtemp(prefix="mpl_doctor_")
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
-REQUIRED_PACKAGES = [
+MIN_PYTHON = (3, 10)
+
+REQUIRED_PACKAGES: list[tuple[str, str]] = [
     ("numpy", "numpy"),
     ("pandas", "pandas"),
     ("matplotlib", "matplotlib"),
@@ -18,6 +32,15 @@ REQUIRED_PACKAGES = [
     ("sklearn", "scikit-learn"),
     ("pyarrow", "pyarrow"),
     ("h5py", "h5py"),
+    ("jinja2", "jinja2"),
+    ("seaborn", "seaborn"),
+]
+
+MODELZOO_PACKAGES: list[tuple[str, str]] = [
+    ("torch", "torch"),
+    ("lightgbm", "lightgbm"),
+    ("xgboost", "xgboost"),
+    ("catboost", "catboost"),
 ]
 
 REQUIRED_DATA_FILES = [
@@ -34,8 +57,29 @@ LFS_POINTER_SIGNATURE = b"version https://git-lfs.github.com/spec/"
 LFS_POINTER_MAX_BYTES = 200
 
 
+def _col(text: str, code: int) -> str:
+    if not sys.stdout.isatty():
+        return text
+    return f"\033[{code}m{text}\033[0m"
+
+
+def _pass(msg: str) -> str:
+    return _col(f"  PASS  {msg}", 32)
+
+
+def _fail(msg: str) -> str:
+    return _col(f"  FAIL  {msg}", 31)
+
+
+def _warn(msg: str) -> str:
+    return _col(f"  WARN  {msg}", 33)
+
+
+def _info(msg: str) -> str:
+    return _col(f"  INFO  {msg}", 36)
+
+
 def _is_lfs_pointer(path: Path) -> bool:
-    """Detect an unresolved Git-LFS pointer (small text stub instead of real data)."""
     try:
         with open(path, "rb") as f:
             head = f.read(LFS_POINTER_MAX_BYTES)
@@ -45,18 +89,16 @@ def _is_lfs_pointer(path: Path) -> bool:
 
 
 def _validate_parquet(path: Path) -> tuple[bool, str]:
-    """Open parquet metadata to confirm the file is usable."""
     try:
         import pyarrow.parquet as pq
         pf = pq.ParquetFile(path)
         meta = pf.metadata
-        return True, f"{meta.num_rows:,} rows × {meta.num_columns} cols"
+        return True, f"{meta.num_rows:,} rows x {meta.num_columns} cols"
     except Exception as exc:
         return False, str(exc)
 
 
 def _validate_csv(path: Path) -> tuple[bool, str]:
-    """Quick-check a CSV has a header and at least one data row."""
     try:
         with open(path) as f:
             header = f.readline()
@@ -71,42 +113,58 @@ def _validate_csv(path: Path) -> tuple[bool, str]:
         return False, str(exc)
 
 
-def check_python() -> bool:
-    ok = sys.version_info >= (3, 10)
-    ver = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
-    status = "OK" if ok else "FAIL (need >= 3.10)"
-    print(f"  Python {ver:>10s}  {status}")
-    return ok
+def check_python() -> list[str]:
+    v = sys.version_info
+    label = f"Python {v.major}.{v.minor}.{v.micro}"
+    if (v.major, v.minor) >= MIN_PYTHON:
+        print(_pass(label))
+        return []
+    msg = f"{label} — requires {MIN_PYTHON[0]}.{MIN_PYTHON[1]}+"
+    print(_fail(msg))
+    return [msg]
 
 
-def check_packages() -> tuple[int, int]:
-    passed = 0
-    total = len(REQUIRED_PACKAGES)
-    for import_name, pip_name in REQUIRED_PACKAGES:
+def check_packages(pkgs: list[tuple[str, str]], tier: str) -> list[str]:
+    failures: list[str] = []
+    for import_name, display_name in pkgs:
         try:
             mod = importlib.import_module(import_name)
             ver = getattr(mod, "__version__", "?")
-            print(f"  {pip_name:<20s} {ver:<12s} OK")
-            passed += 1
+            print(_pass(f"[{tier}] {display_name} ({ver})"))
         except ImportError:
-            print(f"  {pip_name:<20s} {'—':<12s} MISSING  (pip install {pip_name})")
-    return passed, total
+            msg = f"[{tier}] {display_name} — not installed"
+            if tier == "model-zoo":
+                print(_warn(msg))
+            else:
+                print(_fail(msg))
+                failures.append(msg)
+        except Exception as exc:
+            msg = f"[{tier}] {display_name} — import error: {exc}"
+            if tier == "model-zoo":
+                print(_warn(msg))
+            else:
+                print(_fail(msg))
+                failures.append(msg)
+    return failures
 
 
-def check_data() -> tuple[int, int]:
+def check_data(verbose: bool) -> list[str]:
     data_dir = REPO_ROOT / "data"
-    passed = 0
-    total = len(REQUIRED_DATA_FILES)
+    failures: list[str] = []
 
     for fname in REQUIRED_DATA_FILES:
         fpath = data_dir / fname
 
         if not fpath.exists():
-            print(f"  {fname:<35s} MISSING  (run: git lfs pull)")
+            msg = f"{fname} — missing (run: git lfs pull)"
+            print(_fail(msg))
+            failures.append(msg)
             continue
 
         if _is_lfs_pointer(fpath):
-            print(f"  {fname:<35s} LFS POINTER — not resolved  (run: git lfs pull)")
+            msg = f"{fname} — unresolved LFS pointer (run: git lfs pull)"
+            print(_fail(msg))
+            failures.append(msg)
             continue
 
         if fname.endswith(".parquet"):
@@ -118,73 +176,98 @@ def check_data() -> tuple[int, int]:
 
         size_mb = fpath.stat().st_size / 1_000_000
         if ok:
-            print(f"  {fname:<35s} {size_mb:>7.1f} MB  OK  ({detail})")
-            passed += 1
+            if verbose:
+                print(_pass(f"{fname:<35s} {size_mb:>7.1f} MB  ({detail})"))
+            else:
+                print(_pass(fname))
         else:
-            print(f"  {fname:<35s} {size_mb:>7.1f} MB  CORRUPT  ({detail})")
+            msg = f"{fname} — corrupt ({detail})"
+            print(_fail(msg))
+            failures.append(msg)
 
-    return passed, total
+    return failures
 
 
 def check_output_dirs() -> None:
     for subdir in ("tables", "figures"):
         d = REPO_ROOT / "output" / subdir
         if d.exists():
-            print(f"  output/{subdir}/  exists")
+            print(_pass(f"output/{subdir}/"))
         else:
             d.mkdir(parents=True, exist_ok=True)
-            print(f"  output/{subdir}/  created")
+            print(_info(f"output/{subdir}/ created"))
 
 
 def check_optional_keys() -> None:
-    import os
     for key in ("MASSIVE_API_KEY", "THETADATA_USERNAME"):
         val = os.environ.get(key)
         if val:
-            print(f"  {key:<25s} set")
+            print(_pass(f"{key} set"))
         else:
-            print(f"  {key:<25s} not set (Tier 2 rebuild only)")
+            print(_info(f"{key} not set (Tier 2 rebuild only)"))
 
 
-def main() -> None:
-    print("=" * 60)
-    print("0DTE Replication Package — Environment Check")
-    print("=" * 60)
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="0DTE replication package — environment and data health check."
+    )
+    parser.add_argument(
+        "--quick",
+        action="store_true",
+        help="Check Python and dependencies only; skip data and output validation.",
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Show detailed info for passing checks (file sizes, row counts).",
+    )
+    args = parser.parse_args()
 
-    print("\n[1] Python Version")
-    py_ok = check_python()
+    print()
+    print(f"  Repo root: {REPO_ROOT}")
+    print(f"  Python:    {sys.executable}")
+    print()
 
-    print("\n[2] Required Packages")
-    pkg_ok, pkg_total = check_packages()
+    all_failures: list[str] = []
 
-    print("\n[3] Data Files")
-    data_ok, data_total = check_data()
+    print("── Python ──")
+    all_failures.extend(check_python())
+    print()
 
-    print("\n[4] Output Directories")
-    check_output_dirs()
+    print("── Base packages (Tier 1) ──")
+    all_failures.extend(check_packages(REQUIRED_PACKAGES, "base"))
+    print()
 
-    print("\n[5] Optional API Keys (Tier 2)")
-    check_optional_keys()
+    print("── Model-zoo packages (optional) ──")
+    check_packages(MODELZOO_PACKAGES, "model-zoo")
+    print()
 
-    print("\n" + "=" * 60)
-    all_ok = py_ok and (pkg_ok == pkg_total) and (data_ok == data_total)
-    if all_ok:
-        print("All checks passed. Ready to replicate.")
-        print("  Run:  python code/run_replication.py")
+    if not args.quick:
+        print("── Data files ──")
+        all_failures.extend(check_data(verbose=args.verbose))
+        print()
+
+        print("── Output directories ──")
+        check_output_dirs()
+        print()
+
+        print("── API keys (Tier 2) ──")
+        check_optional_keys()
+        print()
+
+    print("─" * 55)
+    if all_failures:
+        print(_fail(f"{len(all_failures)} issue(s) found:"))
+        for f in all_failures:
+            print(f"    - {f}")
+        print()
+        return 1
     else:
-        issues = []
-        if not py_ok:
-            issues.append("Python < 3.10")
-        if pkg_ok < pkg_total:
-            issues.append(f"{pkg_total - pkg_ok} missing package(s)")
-        if data_ok < data_total:
-            issues.append(f"{data_total - data_ok} missing/incomplete data file(s)")
-        print(f"Issues found: {', '.join(issues)}")
-        print("Fix the above before running replication.")
-    print("=" * 60)
-
-    sys.exit(0 if all_ok else 1)
+        print(_pass("All checks passed. Ready to replicate."))
+        print(f"  Run:  python code/run_replication.py")
+        print()
+        return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
