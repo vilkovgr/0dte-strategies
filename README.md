@@ -13,7 +13,7 @@ This is the **AI-augmented replication package** for the paper. It ships:
 | Tier | What you get | What you need |
 |------|-------------|---------------|
 | **Tier 1 — Instant replication** | Pre-built derived data panels + analysis scripts → reproduce every table and figure | Python ≥ 3.10, `pip install -r requirements.txt` |
-| **Tier 2 — Rebuild from source** | Ingest adapters for [Massive](https://massive.co) or [ThetaData](https://thetadata.net) → rebuild raw data from scratch | Tier 1 + API subscription |
+| **Tier 2 — Rebuild from source** | Ingest adapters for [Massive](https://massive.com) or [ThetaData](https://thetadata.net) → rebuild raw data from scratch | Tier 1 + API subscription |
 | **Tier 3 — Explore & extend** | AI-optimized context documents + agent skills → ask an LLM to explain, critique, or extend the analysis | Tier 1 + any code-capable LLM |
 
 Raw Cboe bar files are proprietary and not redistributed. The shipped derived panels (`data/`) contain all interpolated option-level, strategy-level, and moment variables needed to run every exhibit.
