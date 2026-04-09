@@ -45,8 +45,8 @@ All in `data/` directory (Git LFS tracked):
 - `data_structures.parquet` — strategy-level panel (7 types, flow/liquidity features)
 - `vix.parquet` — VIX and intraday implied/realized moments
 - `slopes.parquet` — Volatility surface slopes (point-in-time)
-- `future_moments_SPX.parquet` — forward realized moments for SPX
-- `future_moments_VIX.parquet` — forward realized moments for VIX
+- `future_moments_SPX.parquet` — forward realized moments for SPX (PIT intraday)
+- `future_moments_VIX.parquet` — forward realized moments for VIX (PIT intraday)
 - `ALL_eod.csv` — end-of-day reference prices
 
 ## Seven Strategy Types

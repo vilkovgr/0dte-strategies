@@ -61,8 +61,8 @@ data/                    Shipped derived panels (Git LFS)
   data_structures.parquet Strategy panel (7 types × moneyness × dates)
   vix.parquet            VIX + intraday moments
   slopes.parquet         Volatility surface slopes (PIT)
-  future_moments_SPX.parquet  Forward realized moments (SPX)
-  future_moments_VIX.parquet  Forward realized moments (VIX)
+  future_moments_SPX.parquet  Forward realized moments, PIT intraday (SPX)
+  future_moments_VIX.parquet  Forward realized moments, PIT intraday (VIX)
   ALL_eod.csv            End-of-day reference prices
 
 output/
@@ -82,7 +82,7 @@ tools/
 | Variable | Definition | Source |
 |----------|-----------|--------|
 | IV | Implied variance (VIX methodology on 0DTE SPXW) | data_opt |
-| RV | Realized variance (sum of squared 1-min returns to close) | vix, future_moments |
+| RV | Realized variance (sum of squared 1-min returns from t to close, PIT) | vix, future_moments |
 | VRP | Variance risk premium = IV − RV | Computed |
 | IS / RS | Implied / Realized skewness (semivariance difference) | data_opt, vix |
 | SRP | Skewness risk premium = IS − RS | Computed |

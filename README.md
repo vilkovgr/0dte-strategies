@@ -73,8 +73,8 @@ See [QUICKSTART.md](QUICKSTART.md) for detailed setup instructions, troubleshoot
 │   ├── data_structures.parquet    # Strategy-level panel
 │   ├── vix.parquet                # VIX and intraday moment series
 │   ├── slopes.parquet             # Volatility surface slopes (PIT)
-│   ├── future_moments_SPX.parquet # Forward-looking realized moments (SPX)
-│   ├── future_moments_VIX.parquet # Forward-looking realized moments (VIX)
+│   ├── future_moments_SPX.parquet # Forward-looking realized moments, PIT intraday (SPX)
+│   ├── future_moments_VIX.parquet # Forward-looking realized moments, PIT intraday (VIX)
 │   └── ALL_eod.csv                # End-of-day reference prices
 ├── output/
 │   ├── tables/                    # Generated LaTeX tables
@@ -107,7 +107,7 @@ See [QUICKSTART.md](QUICKSTART.md) for detailed setup instructions, troubleshoot
 | `data_structures.parquet` | ~700K | Strategy-level panel: 7 structure types × moneyness configs × dates, with PNL, flow, and liquidity features |
 | `vix.parquet` | ~30K | Intraday VIX levels and implied/realized moment time series |
 | `slopes.parquet` | ~2.4K | Volatility surface slopes (point-in-time, intraday) |
-| `future_moments_{SPX,VIX}.parquet` | ~2.4K each | Forward-looking realized variance, semivariance, skewness (daily) |
+| `future_moments_{SPX,VIX}.parquet` | ~2.4K each | Forward-looking realized variance, semivariance, skewness (PIT intraday) |
 | `ALL_eod.csv` | ~2.4K | End-of-day SPX, VIX, and related reference prices |
 
 ### Rebuilding from Source (Tier 2)
