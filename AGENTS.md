@@ -71,10 +71,30 @@ output/
 
 tests/
   reference/tables/      Ground-truth LaTeX for parity checks
-  test_replication.py    Byte-level parity test
+  fixtures/sample_paper.tex  Self-contained LaTeX fixture for CI
+  test_replication.py    Byte-level parity test (tables)
+  test_tools.py          Smoke tests: doctor, converter, doc structure
 
 tools/
-  doctor.py              Environment health checker
+  doctor.py              Environment health checker (base→FAIL, model-zoo→WARN)
+  latex2md.py            LaTeX → annotated-markdown converter (--meta overrides)
+  sync_to_public.py      Dev-to-public sync helper
+
+docs/
+  agent-context/         Structured context for LLM agents
+    reading-guide.md     Paper reading guide: claims, structure, methods
+    variables.md         Variable definitions and feature families
+    method.md            Methodology overview
+    results-summary.md   Key results summary
+    strategies.md        Strategy type descriptions
+  manifests/             Exhibit-to-code mappings
+    exhibits.csv         Table/figure → script mapping
+    data-files.csv       Data file inventory
+    code-map.md          Code structure narrative
+    paper-claims.csv     Paper claims → evidence mapping
+  paper/
+    paper-annotated.md   Full paper with @section-type annotations
+    paper-digest.md      Condensed paper digest
 ```
 
 ## Key Variables and Concepts
@@ -133,6 +153,10 @@ python tests/test_replication.py  → compares output/tables/ vs tests/reference
 
 4. **No proprietary data**: Never attempt to read `.h5` files (HDF5) — the repo uses `.parquet` exclusively. The original HDF5 moments file has been converted to `future_moments_SPX.parquet` and `future_moments_VIX.parquet`.
 
-5. **Testing**: After modifying any analysis script, run `python tests/test_replication.py` to verify output parity.
+5. **Testing**: After modifying any analysis script, run `python tests/test_replication.py` to verify output parity. Run `python tests/test_tools.py` to verify tooling and documentation integrity.
 
-6. **Dependencies**: All required packages are in `requirements.txt`. Do not add heavy ML frameworks unless the user explicitly requests Tier 2 model training.
+6. **Dependencies**: All required packages are in `requirements.txt` (base) and `requirements-modelzoo.txt` (optional ML frameworks). Do not add heavy ML frameworks unless the user explicitly requests Tier 2 model training.
+
+7. **Annotated paper**: `docs/paper/paper-annotated.md` contains the full paper text with `<!-- @section-type: ... -->` HTML comment annotations. Use it for section-level navigation, claim extraction, and equation/table/figure lookups.
+
+8. **Converter**: `tools/latex2md.py` regenerates `paper-annotated.md` from LaTeX source. It is maintainer-only (the `.tex` source is not shipped). Use `--meta KEY=VALUE` to override document-level metadata fields.

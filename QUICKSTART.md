@@ -64,10 +64,15 @@ Tables appear in `output/tables/`, figures in `output/figures/`.
 ## Step 7: Verify Parity
 
 ```bash
+# Table parity: generated tables vs. reference
 python tests/test_replication.py
+
+# Tooling: doctor, converter, documentation structure
+python tests/test_tools.py
 ```
 
-Compares generated tables byte-for-byte against `tests/reference/tables/`.
+`test_replication.py` compares generated tables byte-for-byte against `tests/reference/tables/`.
+`test_tools.py` verifies the environment checker, LaTeX converter, and documentation completeness.
 
 ---
 

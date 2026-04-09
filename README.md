@@ -81,12 +81,16 @@ See [QUICKSTART.md](QUICKSTART.md) for detailed setup instructions, troubleshoot
 │   └── figures/                   # Generated PDF/PNG figures
 ├── tests/
 │   ├── reference/tables/          # Ground-truth tables for parity checks
-│   └── test_replication.py        # Automated parity test
+│   ├── fixtures/sample_paper.tex  # Self-contained LaTeX fixture for CI
+│   ├── test_replication.py        # Automated parity test (tables)
+│   └── test_tools.py              # Smoke tests for doctor, converter, docs
 ├── tools/
-│   └── doctor.py                  # Environment and data health check
-├── docs/                          # AI context and paper documentation
+│   ├── doctor.py                  # Environment and data health check
+│   └── latex2md.py                # LaTeX → annotated-markdown converter
+├── docs/
 │   ├── agent-context/             # Structured context for LLM agents
-│   └── manifests/                 # Exhibit-to-code mappings
+│   ├── manifests/                 # Exhibit-to-code mappings
+│   └── paper/paper-annotated.md   # Full paper with @section-type annotations
 ├── AGENTS.md                      # AI agent onboarding (GitHub Copilot / Codex)
 ├── CLAUDE.md                      # Claude-specific project context
 ├── QUICKSTART.md                  # Detailed setup guide
@@ -164,13 +168,16 @@ python figs_strats.py
 
 ## Testing
 
-Verify that your output matches the paper's published tables:
-
 ```bash
+# Parity: verify generated tables match the paper's published tables
 python tests/test_replication.py
+
+# Tooling: verify doctor, converter, and documentation structure
+python tests/test_tools.py
 ```
 
-The harness compares generated LaTeX tables byte-for-byte against `tests/reference/tables/`.
+`test_replication.py` compares generated LaTeX tables byte-for-byte against `tests/reference/tables/`.
+`test_tools.py` runs `doctor.py`, exercises `latex2md.py` end-to-end against the shipped fixture, and checks documentation completeness.
 
 ---
 
@@ -180,6 +187,8 @@ This repo is designed to work with AI coding assistants. See:
 
 - **[AGENTS.md](AGENTS.md)** — Mission, data model, and file map for GitHub Copilot / Codex agents
 - **[CLAUDE.md](CLAUDE.md)** — Claude-specific onboarding and skills
+- **[docs/paper/paper-annotated.md](docs/paper/paper-annotated.md)** — Full paper text with `@section-type` annotations for machine navigation
+- **[docs/agent-context/](docs/agent-context/)** — Reading guide, variable dictionary, method overview, results summary
 
 Example prompts for an AI assistant:
 

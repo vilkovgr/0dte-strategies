@@ -27,6 +27,8 @@ python tests/test_replication.py # verify parity with reference
 | Single table family | `python code/analysis/<script>.py` |
 | Check environment | `python tools/doctor.py` |
 | Run parity tests | `python tests/test_replication.py` |
+| Run tooling tests | `python tests/test_tools.py` |
+| Convert LaTeX to annotated MD | `python tools/latex2md.py paper.tex -o out.md` |
 
 ## Code Structure
 
@@ -58,6 +60,16 @@ All in `data/` directory (Git LFS tracked):
 5. Bear Put Spread
 6. Call Ratio Spread
 7. Put Ratio Spread
+
+## AI Context Documents
+
+- `docs/paper/paper-annotated.md` — Full paper with `@section-type` HTML annotations for machine navigation
+- `docs/paper/paper-digest.md` — Condensed paper digest
+- `docs/agent-context/reading-guide.md` — Structure, core claims, methodological choices
+- `docs/agent-context/variables.md` — Variable definitions and feature families
+- `docs/agent-context/method.md` — Methodology overview
+- `docs/agent-context/results-summary.md` — Key results summary
+- `docs/manifests/exhibits.csv` — Table/figure → script mapping
 
 ## Important Context for Edits
 
