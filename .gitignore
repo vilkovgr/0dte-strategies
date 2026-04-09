@@ -9,3 +9,6 @@ venv/
 
 # Large data files tracked via Git LFS or shipped separately
 # (the parquet/h5 files in data/ ARE tracked -- they are the shipped panels)
+
+# Raw API downloads (Tier 2 — not committed, rebuilt from source)
+data/raw/
