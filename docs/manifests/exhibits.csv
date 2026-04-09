@@ -1,0 +1,25 @@
+exhibit_id,type,label,section,script,output_file,description
+fig1,figure,fig:vrp,3.1,figs_strats.py,output/figures/vrp_bytime_bars.pdf,Variance risk premiums at 0DTE horizons by intraday bar
+fig2,figure,fig:optprices,3.1,figs_strats.py,output/figures/calls_mid_bymnes_bars.pdf;output/figures/calls_tv_bymnes_bars.pdf;output/figures/puts_mid_bymnes_bars.pdf;output/figures/puts_tv_bymnes_bars.pdf,0DTE option prices and time value at 10:00 ET
+fig3,figure,fig:optret,3.2,figs_strats.py,output/figures/calls_reth_bymnes_bars.pdf;output/figures/calls_reth_und_bymnes_bars.pdf;output/figures/puts_reth_bymnes_bars.pdf;output/figures/puts_reth_und_bymnes_bars.pdf,Individual 0DTE option returns and PNL
+fig4,figure,fig:strat-ret,3.3,figs_strats.py,output/figures/strangle_reth_und_bymnes_bars.pdf;output/figures/iron_condor_reth_und_bymnes_bars.pdf;...,Unconditional 0DTE strategy PNL at 10:00 ET (bar charts)
+fig5,figure,fig:strat-ret-ts,3.3,figs_strats.py,output/figures/ts_strangle_reth_und.pdf;output/figures/ts_iron_condor_reth_und.pdf;...,Time variation in 0DTE strategy PNL (63-day moving average)
+fig6,figure,fig:strat-example,A.1,figs_strats.py,output/figures/strat_payoffs.pdf,Strategy payoff diagrams
+fig7,figure,fig:cond_oos_investment_ts,5.3,compute_conditional_oos_investment_ts.py,output/figures/oos_conditional_investment_ts.pdf,Cumulative net PNL of OOS strategy sleeves and baskets
+fig8,figure,fig:topk_basket_legs,5.3,plot_conditional_topk_basket_legs.py,output/figures/topk_conditional_basket_legs.pdf,Top-K basket leg composition
+tab1,table,tab:0dte_strat_ret,3.3,option_strats_uncond_analysis.py,output/tables/0dte_stratret2000_2100_main.tex,Unconditional 0DTE strategy PNL at 10:00 ET (full sample)
+tab1a,table,tab:0dte_stratret2016_2019,A.2,option_strats_uncond_analysis.py,output/tables/0dte_stratret2016_2019.tex,Strategy PNL subperiod 2016-2019
+tab1b,table,tab:0dte_stratret2020_2021,A.2,option_strats_uncond_analysis.py,output/tables/0dte_stratret2020_2021.tex,Strategy PNL subperiod 2020-2021
+tab1c,table,tab:0dte_stratret2022_2023,A.2,option_strats_uncond_analysis.py,output/tables/0dte_stratret2022_2023.tex,Strategy PNL subperiod 2022-2023
+tab1d,table,tab:0dte_stratret2023_2024,A.2,option_strats_uncond_analysis.py,output/tables/0dte_stratret2023_2024.tex,Strategy PNL subperiod 2023-2024
+tab1e,table,tab:0dte_stratret2024_2026,A.2,option_strats_uncond_analysis.py,output/tables/0dte_stratret2024_2026.tex,Strategy PNL subperiod 2024-2026
+tab2,table,tab:implementable_pnl,3.4,compute_implementable_pnl.py,output/tables/0dte_implementable_pnl.tex,Implementable net PNL and capital usage
+tab3,table,tab:tail_risk_diag,3.5,compute_tail_risk_diagnostics.py,output/tables/0dte_tail_risk_diagnostics.tex,Tail risk of implementable 0DTE strategy PNL
+tab4,table,tab:inference_cluster_mht,4.1,compute_clustered_inference_mht.py,output/tables/0dte_inference_cluster_mht.tex,Inference robustness with clustered SE and BHY correction
+tab5,table,tab:structbreak_2022,3.4,compute_structural_break_2022.py,output/tables/0dte_structbreak_post2022.tex,Regime stability around 2022 daily expiry expansion
+tab6,table,tab:vix_regime_1000,5.1,compute_vix_regime_conditioning.py,output/tables/0dte_vix_regime_1000.tex,Strategy PNL by 10:00 ET VIX regime
+tab7,table,tab:cond_oos,5.2,compute_conditional_oos_protocol.py,output/tables/0dte_conditional_oos.tex,Strategy-level OOS timing performance
+tab8,table,tab:cond_model_zoo,5.2,build_conditional_target_choice_table.py,output/tables/0dte_conditional_target_choice.tex,Target design comparison (return vs binary hard vs soft)
+tab9,table,tab:cond_oos_investment,5.3,compute_conditional_oos_investment_ts.py,output/tables/0dte_conditional_oos_investment.tex,Portfolio implementation of OOS strategy signals
+tab_momexpl,table,tab:strat_ret_expl,4,option_strats_uncond_analysis.py,output/tables/strat_PNL_rv_rvrs_ivrv_ivisrvrs.tex,What drives strategy PNL: implied and realized moments
+tab_moneyness,table,tab:cond_rep_moneyness,5.2,moneyness_selection.py,output/tables/0dte_conditional_representative_moneyness.tex,Representative strategy moneyness configurations

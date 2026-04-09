@@ -1,0 +1,8 @@
+file,format,rows_approx,size_mb,description,key_columns,git_lfs
+data/data_opt.parquet,parquet,3500000,263,Interpolated 0DTE option panel: mid prices; Greeks; bid-ask spread; payoff; PNL,"quote_date,quote_time,option_type,mnes_rel,mid,delta,gamma,vega,bas,reth,reth_und,intrinsic,time_value",yes
+data/data_structures.parquet,parquet,700000,12,Strategy-level panel: 7 structure types with PNL; flow and liquidity features,"quote_date,quote_time,option_type,mnes_center,reth_und,mid,delta,gamma,vega,bas,pnl_net",yes
+data/vix.parquet,parquet,30000,1.6,Intraday VIX and implied/realized moments from SPXW 0DTE,"quote_date,quote_time,root,dte,vix,vixup,vixdn",yes
+data/slopes.parquet,parquet,2400,0.4,VIX term-structure slopes (daily),"quote_date,quote_time,slope_up,slope_dn",yes
+data/future_moments_SPX.parquet,parquet,30000,102,Forward-looking realized moments for SPX (intraday),"date,time,SPX_lret,SPX_lrv,SPX_lrvup,SPX_lrvdn,SPX_lrv_skew",yes
+data/future_moments_VIX.parquet,parquet,16000,30,Forward-looking realized moments for VIX (intraday),"date,time,VIX_lret,VIX_lrv,VIX_lrvup,VIX_lrvdn,VIX_lrv_skew",yes
+data/ALL_eod.csv,csv,2400,1.9,End-of-day SPX; VIX; and related reference prices,"Date,root,Close,Open,High,Low",no

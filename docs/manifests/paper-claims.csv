@@ -1,0 +1,14 @@
+claim_id,section,claim,evidence_table,evidence_figure,replication_script
+C1,3.1,Positive 0DTE VRP exists but is economically small (~0.001% of spot at 10:00 ET),,fig:vrp,figs_strats.py
+C2,3.2,Individual OTM option returns are highly volatile and often not statistically distinguishable from zero,,fig:optret,figs_strats.py
+C3,3.3,Strategy PNL distributions are wide and tail-heavy; no strategy is risk-free,tab:0dte_strat_ret,fig:strat-ret,option_strats_uncond_analysis.py
+C4,3.4,"After execution costs (half-spread + 0.5bp), most strategies have poor mean-to-tail ratios",tab:implementable_pnl,,compute_implementable_pnl.py
+C5,3.5,"ES(1%) values range 0.58-1.58% of underlying; worst-day outcomes severe",tab:tail_risk_diag,,compute_tail_risk_diagnostics.py
+C6,3.4,"Pre/post 2022 PNL sign changes exist but are statistically weak under date clustering",tab:structbreak_2022,,compute_structural_break_2022.py
+C7,4,Realized skewness is a stronger PNL driver than realized variance for most strategies,tab:strat_ret_expl,,option_strats_uncond_analysis.py
+C8,4.1,Moment-PNL relationships survive Benjamini-Hochberg multiple-testing correction,tab:inference_cluster_mht,,compute_clustered_inference_mht.py
+C9,5.1,VIX regime heterogeneity: downside structures earn more in high-VIX,tab:vix_regime_1000,,compute_vix_regime_conditioning.py
+C10,5.2,Binary direction prediction dominates return magnitude prediction for OOS trading,tab:cond_model_zoo,,build_conditional_target_choice_table.py
+C11,5.2,"Put ratio spreads reach SR 1.26, iron butterflies 0.82 under strict OOS",tab:cond_oos,,compute_conditional_oos_protocol.py
+C12,5.3,"Top-3 by SR basket reaches SR 1.27; all-strategies basket reaches 1.01",tab:cond_oos_investment,fig:cond_oos_investment_ts,compute_conditional_oos_investment_ts.py
+C13,6,"0DTE is better viewed as a tightly risk-budgeted tactical overlay, not standing carry",,,
