@@ -1,0 +1,14 @@
+\begin{tabular}{llllrrrrrr}
+\toprule
+Model & Feature Set & Scaling & Window & Hit Rate (\%) & Brier & Calib. Slope & Mean Net (bps) & SR Net & N \\
+\midrule
+CatBoost & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Expanding & 50.3 & 0.252 & -0.01 & 1.390 & 0.90 & 31469 \\
+CatBoost & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Rolling & 48.8 & 0.254 & -0.23 & 0.566 & 0.38 & 31469 \\
+CatBoost & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Expanding & 50.3 & 0.252 & -0.01 & 1.390 & 0.90 & 31469 \\
+CatBoost & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 48.8 & 0.254 & -0.23 & 0.566 & 0.38 & 31469 \\
+XGBoost & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Expanding & 50.9 & 0.252 & 0.07 & 0.913 & 0.74 & 31469 \\
+XGBoost & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Rolling & 48.2 & 0.253 & -0.22 & -0.584 & -0.48 & 31469 \\
+XGBoost & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Expanding & 50.9 & 0.252 & 0.07 & 0.913 & 0.74 & 31469 \\
+XGBoost & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 48.2 & 0.253 & -0.22 & -0.584 & -0.48 & 31469 \\
+\bottomrule
+\end{tabular}

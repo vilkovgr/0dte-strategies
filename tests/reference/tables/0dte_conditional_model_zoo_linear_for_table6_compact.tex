@@ -1,0 +1,12 @@
+\begin{tabular}{lllrrrr}
+\toprule
+Model & Best Feature Set & Window & Hit Rate (\%) & Mean Net (bps) & SR Net & N \\
+\midrule
+Ridge (CV) & All Features & Rolling & 50.0 & 0.568 & 0.49 & 31469 \\
+Ridge (CV Strong) & All Features & Rolling & 49.9 & 0.394 & 0.33 & 31469 \\
+Elastic Net & All Features & Expanding & 50.1 & 0.317 & 0.24 & 31469 \\
+Elastic Net (Sparse) & All Features & Expanding & 50.0 & 0.270 & 0.19 & 31469 \\
+\midrule
+Top overall & All Features & Rolling & 50.0 & 0.568 & 0.49 & 31469 \\
+\bottomrule
+\end{tabular}

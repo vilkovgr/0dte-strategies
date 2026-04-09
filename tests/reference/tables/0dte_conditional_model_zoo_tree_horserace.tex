@@ -1,0 +1,30 @@
+\begin{tabular}{llllrrrrrr}
+\toprule
+Model & Feature Set & Scaling & Window & Hit Rate (\%) & Brier & Calib. Slope & Mean Net (bps) & SR Net & N \\
+\midrule
+CatBoost & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Expanding & 50.3 & 0.252 & -0.01 & 1.390 & 0.90 & 31469 \\
+CatBoost & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Rolling & 48.8 & 0.254 & -0.23 & 0.566 & 0.38 & 31469 \\
+CatBoost & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Expanding & 50.3 & 0.252 & -0.01 & 1.390 & 0.90 & 31469 \\
+CatBoost & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 48.8 & 0.254 & -0.23 & 0.566 & 0.38 & 31469 \\
+CatBoost (Deep) & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Expanding & 51.5 & 0.253 & 0.01 & 1.061 & 0.70 & 31469 \\
+CatBoost (Deep) & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Rolling & 50.4 & 0.254 & -0.08 & 1.021 & 0.66 & 31469 \\
+CatBoost (Deep) & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Expanding & 51.5 & 0.253 & 0.01 & 1.061 & 0.70 & 31469 \\
+CatBoost (Deep) & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 50.4 & 0.254 & -0.08 & 1.021 & 0.66 & 31469 \\
+LightGBM & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Expanding & 51.1 & 0.252 & 0.12 & 0.756 & 0.60 & 31469 \\
+LightGBM & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Rolling & 50.1 & 0.253 & -0.04 & 0.456 & 0.40 & 31469 \\
+LightGBM & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Expanding & 51.1 & 0.252 & 0.12 & 0.756 & 0.60 & 31469 \\
+LightGBM & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 50.1 & 0.253 & -0.04 & 0.456 & 0.40 & 31469 \\
+LightGBM (Deep) & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Expanding & 51.0 & 0.252 & 0.13 & 1.788 & 1.38 & 31469 \\
+LightGBM (Deep) & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Rolling & 49.8 & 0.253 & -0.09 & 0.818 & 0.65 & 31469 \\
+LightGBM (Deep) & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Expanding & 51.0 & 0.252 & 0.13 & 1.788 & 1.38 & 31469 \\
+LightGBM (Deep) & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 49.8 & 0.253 & -0.09 & 0.818 & 0.65 & 31469 \\
+XGBoost & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Expanding & 50.9 & 0.252 & 0.07 & 0.913 & 0.74 & 31469 \\
+XGBoost & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Rolling & 48.2 & 0.253 & -0.22 & -0.584 & -0.48 & 31469 \\
+XGBoost & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Expanding & 50.9 & 0.252 & 0.07 & 0.913 & 0.74 & 31469 \\
+XGBoost & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 48.2 & 0.253 & -0.22 & -0.584 & -0.48 & 31469 \\
+XGBoost (Deep) & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Expanding & 51.2 & 0.253 & 0.04 & 1.483 & 1.07 & 31469 \\
+XGBoost (Deep) & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Rolling & 49.5 & 0.255 & -0.10 & 0.274 & 0.22 & 31469 \\
+XGBoost (Deep) & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Expanding & 51.1 & 0.253 & 0.05 & 1.368 & 0.98 & 31469 \\
+XGBoost (Deep) & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 49.6 & 0.255 & -0.12 & 0.627 & 0.48 & 31469 \\
+\bottomrule
+\end{tabular}

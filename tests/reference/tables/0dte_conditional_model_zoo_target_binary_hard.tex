@@ -1,0 +1,11 @@
+\begin{tabular}{llllrrrrrr}
+\toprule
+Model & Feature Set & Scaling & Window & Hit Rate (\%) & Brier & Calib. Slope & Mean Net (bps) & SR Net & N \\
+\midrule
+Logistic (Elastic Net) & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 63.5 & 0.227 & 0.84 & 0.894 & 1.06 & 7462 \\
+LightGBM Classifier & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 63.2 & 0.230 & 0.59 & 0.127 & 0.13 & 7462 \\
+Random Forest Classifier & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 66.3 & 0.217 & 1.13 & 0.547 & 0.60 & 7462 \\
+Logistic (Ridge) & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 63.4 & 0.227 & 0.82 & 0.891 & 1.07 & 7462 \\
+XGBoost Classifier & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 64.4 & 0.223 & 0.76 & 0.606 & 0.65 & 7462 \\
+\bottomrule
+\end{tabular}

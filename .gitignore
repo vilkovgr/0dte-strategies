@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+.DS_Store
+.vscode/
+*.egg-info/
+
+# Large data files tracked via Git LFS or shipped separately
+# (the parquet/h5 files in data/ ARE tracked -- they are the shipped panels)

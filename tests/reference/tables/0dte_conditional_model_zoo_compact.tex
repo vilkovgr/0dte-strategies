@@ -1,0 +1,15 @@
+\begin{tabular}{lllrrrr}
+\toprule
+Model & Best Feature Set & Window & Hit Rate (\%) & Mean Net (bps) & SR Net & N \\
+\midrule
+Ridge (CV) & All Features & Expanding & 51.7 & 0.687 & 0.93 & 4809 \\
+CatBoost & All Features & Expanding & 51.4 & 0.623 & 0.60 & 4809 \\
+XGBoost (Deep) & All Features & Expanding & 51.7 & 0.322 & 0.32 & 4809 \\
+Elastic Net & All Features & Expanding & 52.4 & 0.281 & 0.31 & 4809 \\
+Random Forest (Deep) & All Features & Expanding & 52.5 & 0.110 & 0.10 & 4809 \\
+LightGBM (Deep) & All Features & Expanding & 50.4 & -0.071 & -0.07 & 4809 \\
+Random Forest & All Features & Expanding & 52.2 & -0.134 & -0.13 & 4809 \\
+\midrule
+Top overall & All Features & Expanding & 51.7 & 0.687 & 0.93 & 4809 \\
+\bottomrule
+\end{tabular}

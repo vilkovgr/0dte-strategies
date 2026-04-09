@@ -1,0 +1,13 @@
+\begin{tabular}{lllrrrr}
+\toprule
+Model & Best Feature Set & Window & Hit Rate (\%) & Mean Net (bps) & SR Net & N \\
+\midrule
+LightGBM & All Features & Rolling & 51.3 & 0.485 & 0.48 & 7462 \\
+Elastic Net & All Features & Rolling & 50.9 & 0.305 & 0.34 & 7462 \\
+XGBoost & All Features & Rolling & 50.4 & -0.313 & -0.32 & 7462 \\
+Ridge (CV) & All Features & Rolling & 51.3 & -0.319 & -0.34 & 7462 \\
+Random Forest & All Features & Rolling & 51.0 & -0.409 & -0.43 & 7462 \\
+\midrule
+Top overall & All Features & Rolling & 51.3 & 0.485 & 0.48 & 7462 \\
+\bottomrule
+\end{tabular}

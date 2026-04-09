@@ -1,0 +1,18 @@
+\begin{tabular}{llllrrrrrr}
+\toprule
+Model & Feature Set & Scaling & Window & Hit Rate (\%) & Brier & Calib. Slope & Mean Net (bps) & SR Net & N \\
+\midrule
+CatBoost Classifier & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 64.6 & 0.223 & 0.80 & 0.350 & 0.98 & 4809 \\
+Logistic (Elastic Net) & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 62.9 & 0.232 & 0.70 & 0.383 & 0.84 & 4809 \\
+Extra Trees Classifier & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 64.9 & 0.224 & 1.27 & 0.140 & 0.48 & 4809 \\
+HistGB Classifier & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 63.3 & 0.229 & 0.68 & 0.212 & 0.58 & 4809 \\
+LightGBM Classifier & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 62.8 & 0.233 & 0.57 & 0.383 & 0.86 & 4809 \\
+Logistic & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 61.9 & 0.233 & 0.67 & 0.374 & 0.83 & 4809 \\
+Neural Net (CNN, Clf) & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 51.5 & 0.249 & 1.20 & 0.009 & 0.09 & 4809 \\
+Neural Net (Linear + Trainable Ridge, Clf) & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 60.1 & 0.235 & 1.00 & 0.106 & 0.30 & 4809 \\
+Neural Net (ReLU, Clf) & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 61.6 & 0.232 & 0.74 & 0.145 & 0.36 & 4809 \\
+Random Forest Classifier & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 66.2 & 0.219 & 1.15 & 0.178 & 0.60 & 4809 \\
+Logistic (Ridge) & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 62.7 & 0.232 & 0.68 & 0.387 & 0.85 & 4809 \\
+XGBoost Classifier & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 64.0 & 0.225 & 0.75 & 0.343 & 0.97 & 4809 \\
+\bottomrule
+\end{tabular}

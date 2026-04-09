@@ -1,0 +1,20 @@
+\begin{tabular}{lllrrrr}
+\toprule
+Model & Best Feature Set & Window & Hit Rate (\%) & Mean Net (bps) & SR Net & N \\
+\midrule
+Logistic (Ridge) & All Features & Rolling & 62.7 & 0.387 & 0.85 & 4809 \\
+LightGBM Classifier & All Features & Rolling & 62.8 & 0.383 & 0.86 & 4809 \\
+Logistic (Elastic Net) & All Features & Rolling & 62.9 & 0.383 & 0.84 & 4809 \\
+Logistic & All Features & Rolling & 61.9 & 0.374 & 0.83 & 4809 \\
+CatBoost Classifier & All Features & Rolling & 64.6 & 0.350 & 0.98 & 4809 \\
+XGBoost Classifier & All Features & Rolling & 64.0 & 0.343 & 0.97 & 4809 \\
+HistGB Classifier & All Features & Rolling & 63.3 & 0.212 & 0.58 & 4809 \\
+Random Forest Classifier & All Features & Rolling & 66.2 & 0.178 & 0.60 & 4809 \\
+Neural Net (ReLU, Clf) & All Features & Rolling & 61.6 & 0.145 & 0.36 & 4809 \\
+Extra Trees Classifier & All Features & Rolling & 64.9 & 0.140 & 0.48 & 4809 \\
+Neural Net (Linear + Trainable Ridge, Clf) & All Features & Rolling & 60.1 & 0.106 & 0.30 & 4809 \\
+Neural Net (CNN, Clf) & All Features & Rolling & 51.5 & 0.009 & 0.09 & 4809 \\
+\midrule
+Top overall & All Features & Rolling & 62.7 & 0.387 & 0.85 & 4809 \\
+\bottomrule
+\end{tabular}

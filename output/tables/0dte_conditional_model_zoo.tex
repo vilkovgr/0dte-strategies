@@ -1,0 +1,13 @@
+\begin{tabular}{llllrrrrrr}
+\toprule
+Model & Feature Set & Scaling & Window & Hit Rate (\%) & Brier & Calib. Slope & Mean Net (bps) & SR Net & N \\
+\midrule
+CatBoost & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Expanding & 51.4 & 0.252 & -0.02 & 0.623 & 0.60 & 4809 \\
+Elastic Net & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Expanding & 52.4 & 0.250 & 0.32 & 0.281 & 0.31 & 4809 \\
+LightGBM (Deep) & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Expanding & 50.4 & 0.253 & -0.11 & -0.071 & -0.07 & 4809 \\
+Random Forest & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Expanding & 52.2 & 0.250 & 0.34 & -0.134 & -0.13 & 4809 \\
+Random Forest (Deep) & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Expanding & 52.5 & 0.251 & 0.01 & 0.110 & 0.10 & 4809 \\
+Ridge (CV) & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Expanding & 51.7 & 0.250 & 0.19 & 0.687 & 0.93 & 4809 \\
+XGBoost (Deep) & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Expanding & 51.7 & 0.255 & -0.02 & 0.322 & 0.32 & 4809 \\
+\bottomrule
+\end{tabular}

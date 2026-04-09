@@ -1,0 +1,10 @@
+\begin{tabular}{llllrrrrrr}
+\toprule
+Model & Feature Set & Scaling & Window & Hit Rate (\%) & Brier & Calib. Slope & Mean Net (bps) & SR Net & N \\
+\midrule
+Neural Net (ReLU) & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Expanding & 51.4 & 0.262 & -0.03 & 0.581 & 0.60 & 31469 \\
+Neural Net (ReLU) & All Features & Cross-sectional + time-series scaling (strategy features), response robust z-score & Rolling & 50.5 & 0.263 & -0.03 & -0.301 & -0.22 & 31469 \\
+Neural Net (ReLU) & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Expanding & 51.0 & 0.265 & -0.03 & 0.267 & 0.27 & 31469 \\
+Neural Net (ReLU) & All Features & Cross-sectional + time-series scaling (strategy features), response z-score & Rolling & 50.2 & 0.265 & -0.04 & -0.272 & -0.21 & 31469 \\
+\bottomrule
+\end{tabular}
