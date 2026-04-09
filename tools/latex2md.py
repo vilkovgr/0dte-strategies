@@ -515,8 +515,8 @@ def convert(
     meta_overrides: dict[str, str] | None = None,
 ) -> str:
     tex = tex_path.read_text(encoding="utf-8", errors="replace")
-    tex = _expand_user_macros(tex)
     meta = _extract_metadata(tex)
+    tex = _expand_user_macros(tex)
 
     body = _strip_latex_preamble(tex)
     body = _strip_comments(body)

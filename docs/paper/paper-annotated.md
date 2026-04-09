@@ -1,7 +1,7 @@
-# Paper
+# 0DTE Trading Rules: Tail Risk, Implementation, and Tactical Timing
 
 <!-- @document-metadata
-  @title: 
+  @title: 0DTE Trading Rules: Tail Risk, Implementation, and Tactical Timing
   @type: academic-paper
   @core-question: We study realized payoffs of S&P500 zero-days-to-expiration (0DTE) options and standard multi-leg structures from...
   @core-answer: Unconditional 0DTE is weak after costs; conditional OOS rules for selected strategies deliver SR 1.0-1.3

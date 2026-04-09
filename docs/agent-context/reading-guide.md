@@ -1,6 +1,6 @@
 # Paper Reading Guide for AI Agents
 
-## Paper: "0DTE Trading Rules: Tail Risk, Implementation, and Tactical Timing"
+## Paper: ["0DTE Trading Rules: Tail Risk, Implementation, and Tactical Timing"](https://ssrn.com/abstract=4641356)
 
 ### One-Sentence Summary
 The paper studies whether S&P 500 zero-days-to-expiration (0DTE) options and multi-leg strategies deliver repeatable net performance, finding that unconditional positions are weak after costs and tail risk, but selected strategies under strict out-of-sample conditional rules achieve Sharpe ratios above 1.0.

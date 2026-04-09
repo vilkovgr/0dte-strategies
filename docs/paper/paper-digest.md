@@ -1,6 +1,6 @@
 # Paper Digest: 0DTE Trading Rules
 
-> AI-optimized summary of *"0DTE Trading Rules: Tail Risk, Implementation, and Tactical Timing"* (Vilkov, 2026).
+> AI-optimized summary of [*"0DTE Trading Rules: Tail Risk, Implementation, and Tactical Timing"*](https://ssrn.com/abstract=4641356) (Vilkov, 2026).
 > This document is designed for LLM agents to quickly understand the paper's claims, methods, and evidence.
 
 ---
