@@ -1,8 +1,11 @@
 # 0DTE Trading Rules: Replication Package
 
-**Paper:** *0DTE Trading Rules: Tail Risk, Implementation, and Tactical Timing*
-**Author:** Grigory Vilkov (Frankfurt School of Finance & Management)
-**Sample:** S&P 500 SPXW 0DTE options, September 2016 – January 2026
+| | |
+|---|---|
+| **Paper** | [*0DTE Trading Rules: Tail Risk, Implementation, and Tactical Timing*](https://ssrn.com/abstract=4641356) |
+| **Author** | Grigory Vilkov (Frankfurt School of Finance & Management) |
+| **Sample** | S&P 500 SPXW 0DTE options, September 2016 – January 2026 |
+| **SSRN** | <https://ssrn.com/abstract=4641356> |
 
 ---
 
@@ -87,10 +90,10 @@ See [QUICKSTART.md](QUICKSTART.md) for detailed setup instructions, troubleshoot
 ├── tools/
 │   ├── doctor.py                  # Environment and data health check
 │   └── latex2md.py                # LaTeX → annotated-markdown converter
-├── docs/                          # AI context and paper documentation
+├── docs/
 │   ├── agent-context/             # Structured context for LLM agents
-│   ├── paper/                     # Paper digest + annotated full text
-│   └── manifests/                 # Exhibit-to-code mappings
+│   ├── manifests/                 # Exhibit-to-code mappings
+│   └── paper/paper-annotated.md   # Full paper with @section-type annotations
 ├── AGENTS.md                      # AI agent onboarding (GitHub Copilot / Codex)
 ├── CLAUDE.md                      # Claude-specific project context
 ├── QUICKSTART.md                  # Detailed setup guide
@@ -183,25 +186,12 @@ python tests/test_tools.py
 
 ## AI Agent Integration (Tier 3)
 
-This repo is designed to work with AI coding assistants. The `docs/agent-context/` folder provides structured context optimized for LLM consumption:
+This repo is designed to work with AI coding assistants. See:
 
-| Document | Contents |
-|----------|----------|
-| `reading-guide.md` | Paper structure, **notation glossary** (35 symbols), **equation quick-reference** (22 equations), dataset divergence log, six curated reading paths |
-| `variables.md` | Variable definitions with equation numbers, GEX features, conditional targets |
-| `method.md` | Interpolation pipeline, conditional protocol, model zoo |
-| `results-summary.md` | Headline numbers for every exhibit |
-| `strategies.md` | Seven strategy templates with legs and PNL definitions |
-| `paper-annotated.md` | Full paper text with `@section-type` machine-readable annotations |
-
-Agent onboarding files:
-
-- **[AGENTS.md](AGENTS.md)** — Mission, data model, file map, and convention guide for GitHub Copilot / Codex agents
-- **[CLAUDE.md](CLAUDE.md)** — Claude-specific context and quick-start commands
-
-Maintainer note:
-
-- `tools/latex2md.py` can regenerate annotated markdown from LaTeX source, but the full paper `.tex` source is not shipped in the public repo. Public tooling tests use `tests/fixtures/sample_paper.tex`.
+- **[AGENTS.md](AGENTS.md)** — Mission, data model, and file map for GitHub Copilot / Codex agents
+- **[CLAUDE.md](CLAUDE.md)** — Claude-specific onboarding and skills
+- **[docs/paper/paper-annotated.md](docs/paper/paper-annotated.md)** — Full paper text with `@section-type` annotations for machine navigation
+- **[docs/agent-context/](docs/agent-context/)** — Reading guide, variable dictionary, method overview, results summary
 
 Example prompts for an AI assistant:
 
@@ -212,19 +202,20 @@ Example prompts for an AI assistant:
 > "Run the conditional OOS protocol and show me the top-5 strategy basket."
 >
 > "What would change if I moved the entry time from 10:00 to 13:00 ET?"
->
-> "Explain equations (17)–(21) — how are GEX features constructed?"
 
 ---
 
 ## Citation
+
+The paper is available on SSRN: <https://ssrn.com/abstract=4641356>
 
 ```bibtex
 @article{Vilkov2026_0DTE,
   author  = {Vilkov, Grigory},
   title   = {0DTE Trading Rules: Tail Risk, Implementation, and Tactical Timing},
   year    = {2026},
-  note    = {Working paper, Frankfurt School of Finance \& Management}
+  note    = {Working paper, Frankfurt School of Finance \& Management},
+  url     = {https://ssrn.com/abstract=4641356}
 }
 ```
 
