@@ -11,7 +11,7 @@ import os
 import time
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
-from urllib.parse import quote
+from urllib.parse import quote, urlparse
 
 import requests
 
@@ -44,6 +44,7 @@ class MassiveClient:
         self.base_url = (
             base_url or os.getenv("MASSIVE_BASE_URL") or "https://api.massive.com"
         ).rstrip("/")
+        self._base_origin = self._origin_tuple(self.base_url)
         self.config = config or RequestConfig()
         self.session = requests.Session()
         self.session.headers.update({
@@ -52,8 +53,31 @@ class MassiveClient:
             "User-Agent": "0dte-strategies/0.1",
         })
 
+    @staticmethod
+    def _origin_tuple(url: str) -> tuple[str, str | None, int | None]:
+        parsed = urlparse(url)
+        port = parsed.port
+        if port is None:
+            if parsed.scheme == "https":
+                port = 443
+            elif parsed.scheme == "http":
+                port = 80
+        return (
+            parsed.scheme,
+            parsed.hostname,
+            port,
+        )
+
+    def _same_origin(self, url: str) -> bool:
+        parsed = urlparse(url)
+        if not parsed.scheme:
+            return True
+        return self._origin_tuple(url) == self._base_origin
+
     def _url(self, path: str) -> str:
         if path.startswith("http"):
+            if not self._same_origin(path):
+                raise ValueError(f"Refusing to follow cross-origin URL: {path}")
             return path
         return f"{self.base_url}{path}" if path.startswith("/") else f"{self.base_url}/{path}"
 
