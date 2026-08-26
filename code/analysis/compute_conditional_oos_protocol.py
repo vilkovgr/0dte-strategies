@@ -13,6 +13,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 
 from _paths import get_project_root, get_data_dir, get_tables_dir
+from cost_units import assert_percent_of_spot_scale
 from moneyness_selection import (
     RepresentativeSelectionConfig,
     apply_representative_filter,
@@ -172,7 +173,10 @@ def compute_daily_net_pnl(strats: pd.DataFrame, opt: pd.DataFrame) -> pd.DataFra
     opt["mnes"] = opt["mnes"].astype(int)
     opt = opt.groupby(["quote_date", "quote_time", "option_type", "mnes"], as_index=False)["bas"].mean()
     bas_lookup = {
-        (row.quote_date, row.quote_time, row.option_type, int(row.mnes)): float(row.bas)
+        # `bas` is stored as a fraction of spot while `reth_und` is in percent of spot
+        # (reth_und = (payoff-mid)*100 in the panel build). Scale to percent so the
+        # spread is commensurate with reth_und and with the fixed 0.5bp fee term.
+        (row.quote_date, row.quote_time, row.option_type, int(row.mnes)): float(row.bas) * 100.0
         for row in opt.itertuples(index=False)
     }
 
@@ -191,6 +195,7 @@ def compute_daily_net_pnl(strats: pd.DataFrame, opt: pd.DataFrame) -> pd.DataFra
 
     strats["half_spread_cost"] = strats.apply(calc_half_spread, axis=1)
     strats = strats.dropna(subset=["half_spread_cost"]).copy()
+    assert_percent_of_spot_scale(strats["half_spread_cost"])
     strats["reth_und"] = strats["reth_und"].astype(float)
     strats["tc"] = strats["half_spread_cost"] + 0.005
     strats["pnl_net"] = strats["reth_und"] - strats["tc"]

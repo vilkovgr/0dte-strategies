@@ -9,6 +9,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from cost_units import assert_percent_of_spot_scale
+
 from _paths import get_project_root, get_data_dir, get_tables_dir
 
 
@@ -184,7 +186,10 @@ def main() -> int:
     opt["mnes"] = opt["mnes"].astype(int)
     opt = opt.groupby(["quote_date", "quote_time", "option_type", "mnes"], as_index=False)["bas"].mean()
     bas_lookup = {
-        (row.quote_date, row.quote_time, row.option_type, int(row.mnes)): float(row.bas)
+        # `bas` is stored as a fraction of spot while `reth_und` is in percent of spot
+        # (reth_und = (payoff-mid)*100 in the panel build). Scale to percent so the
+        # spread is commensurate with reth_und and with the fixed 0.5bp fee term.
+        (row.quote_date, row.quote_time, row.option_type, int(row.mnes)): float(row.bas) * 100.0
         for row in opt.itertuples(index=False)
     }
 
@@ -203,13 +208,16 @@ def main() -> int:
 
     strats["half_spread_cost"] = strats.apply(calc_half_spread, axis=1)
     strats = strats.dropna(subset=["half_spread_cost"]).copy()
+    assert_percent_of_spot_scale(strats["half_spread_cost"])
 
     strats["pnl_mid"] = strats["reth_und"].astype(float)
     strats["pnl_ba"] = strats["pnl_mid"] - strats["half_spread_cost"]
     # 0.5bp slippage+fees in percent units (1bp = 0.01).
     strats["pnl_ba_fee05"] = strats["pnl_ba"] - 0.005
     # Turnover proxy: gross premium exchanged at entry, including half-spread.
-    strats["turnover_proxy"] = strats["mid"].abs() + strats["half_spread_cost"]
+    # `mid` is a fraction of spot; scale to percent to match half_spread_cost so the
+    # reported turnover column is genuinely in basis points.
+    strats["turnover_proxy"] = strats["mid"].abs() * 100.0 + strats["half_spread_cost"]
 
     by_day = (
         strats.groupby(["option_type", "quote_date"], as_index=False)[

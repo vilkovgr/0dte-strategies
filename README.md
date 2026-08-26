@@ -6,7 +6,19 @@
 | **Author** | Grigory Vilkov (Frankfurt School of Finance & Management) |
 | **Sample** | S&P 500 SPXW 0DTE options, September 2016 – January 2026 |
 | **SSRN** | <https://ssrn.com/abstract=4641356> |
-| **Last updated** | May 2026 |
+| **Last updated** | August 2026 |
+
+> [!IMPORTANT]
+> **Correction, August 2026.** A transaction-cost unit-scale error caused the bid-ask
+> half-spread to be charged at 1/100 of its true size (about 0.022 bp instead of
+> 2.2 bp). The code is fixed in this commit, and the correction reverses the sign of the
+> net-of-cost conclusions: no strategy or basket retains a positive net Sharpe ratio.
+> Gross results are also affected. Read **[KNOWN-ISSUES.md](KNOWN-ISSUES.md)** before
+> using any number from this package. Found by [gex.live](https://gex.live).
+>
+> Two caveats on artifact state: the paper PDF and `docs/` are still being revised, and
+> the repository's Git LFS budget is currently exceeded, so the data panels cannot be
+> fetched until that is restored.
 
 ---
 
